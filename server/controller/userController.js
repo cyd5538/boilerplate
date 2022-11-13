@@ -7,16 +7,16 @@ const registerUser = asyncHandler(async (req,res) => {
     const {name, email, password} = req.body
 
     // 세가지 중 하나라도 값이 안들어오면 400 error
-    if(!name || !email || !password){
-        res.status(400)
-        throw new Error("모두 입력해주세요")
-    }
+    // if(!name || !email || !password){
+    //     res.status(400)
+    //     throw new Error("모두 입력해주세요")
+    // }
     
     // 이미 존재하는 이메일인지 확인. 
     const userExists = await User.findOne({email})
 
     if(userExists){
-        res.status(400)
+        res.status(400).send({ message: "이미 사용중인 이메일입니다." });
         throw new Error("이미 사용중인 이메일입니다.")
     }
 

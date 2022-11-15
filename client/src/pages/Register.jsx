@@ -5,7 +5,7 @@ import { registers, reset } from '../feautures/auth/authSlice';
 import { useForm } from "react-hook-form";
 import LoadingSpinner from '../components/LoadingSpinner'
 import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+
 
 // toast options
 const toastObject = {
@@ -71,7 +71,7 @@ const Register = () => {
     }
 
     if (isSuccess || user) {
-      navigate('/login')
+      navigate('/')
     }
 
     dispatch(reset())

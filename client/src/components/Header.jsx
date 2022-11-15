@@ -1,15 +1,28 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineLogin } from 'react-icons/ai'
 import { SlPeople } from "react-icons/sl";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, reset } from "../feautures/auth/authSlice";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const onLogout = () => {
+      dispatch(logout());
+      dispatch(reset());
+      navigate("/");
+  };
+
   return (
     <div className="navbar bg-fuchsia-50">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost normal-case text-xl">FootBall</Link>
       </div>
 
+      {!user ? <>
       {/* user 없을시 */}
       <ul className="flex-none gap-2">
         <li className="btn btn-ghost">
@@ -25,7 +38,8 @@ const Header = () => {
            </Link>
         </li>
       </ul>
-
+      </> : 
+      <>
       {/* user 있을시  */}
       <div className="flex-none gap-2 ">
         <div className="form-control">
@@ -49,13 +63,13 @@ const Header = () => {
             <li>
               <a>Settings</a>
             </li>
-            <li>
+            <li onClick={onLogout}>
               <a>Logout</a>
             </li>
           </ul>
         </div>
       </div>
-
+      </>}
     </div>
   );
 };

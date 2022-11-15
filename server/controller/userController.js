@@ -4,7 +4,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
 const registerUser = asyncHandler(async (req,res) => {
-    const {name, email, password} = req.body
+    const {name, email, password, avatarUrl} = req.body
 
     // 세가지 중 하나라도 값이 안들어오면 400 error
     // if(!name || !email || !password){
@@ -28,7 +28,7 @@ const registerUser = asyncHandler(async (req,res) => {
     const user = await User.create({
         name,
         email,
-        avatarUrl: req.body.avatarUrl,
+        avatarUrl,
         password: hashPassword,
     })
 
@@ -37,6 +37,7 @@ const registerUser = asyncHandler(async (req,res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
+            avatarUrl: user.avatarUrl,
             token: generateToken(user._id)
         })
     }else{
@@ -58,7 +59,7 @@ const LoginUser = asyncHandler(async (req,res) => {
             token: generateToken(user._id)
         })
     }else{
-        res.status(400)
+        res.status(400).send({ message: "이메일과 패스워드를 확인해주세요" });
         throw new Error("이메일과 패스워드를 확인해주세요") 
     }
 })
